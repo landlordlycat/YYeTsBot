@@ -131,3 +131,61 @@ python /path/to/YYeTsBot/yyetsbot/bot.py
 * [网站实时数据，MongoDB](https://yyets.dmesg.app/data/yyets_mongo.gz)
 * [MySQL](https://yyets.dmesg.app/data/yyets_mysql.zip)
 * [SQLite](https://yyets.dmesg.app/data/yyets_sqlite.zip)
+
+
+# 评论API
+
+## 1. 获取评论
+GET `/api/comments`
+
+分页，支持URL参数：
+* size: 每页评论数量，默认5（或者其他数值）
+* page: 当前页
+
+返回
+```json
+{
+    "data": [
+        {
+            "date": "2018-09-18 11:12:15",
+            "username": "uuua2",
+            "content": "tdaadd",
+            "id": 2
+        },
+        {
+            "date": "2018-09-01 11:12:15",
+            "username": "abcd",
+            "content": "tdaadd",
+            "id": 1
+        }
+    ],
+    "count": 2
+}
+
+```
+
+## 2. 获取验证码
+GET `/api/captha?id=1234abc`，id是随机生成的字符串
+API 返回字符串，形如 `data:image/jpeg;base64,iVBORw0KGgoAAA....`
+
+## 3. 提交评论
+POST `/api/comments`
+只有登录用户才可以发表评论，检查cookie `username` 是否为空来判断是否为登录用户；未登录用户提示“请登录后发表评论”
+
+body `resource_id` 从URL中获取，id是上一步验证码的那个id， `captcha` 是用户输入的验证码
+```json
+{
+    "resource_id": 39301,
+    "content": "评论内容",
+    "id": "1234abc",
+    "captcha": "38op"
+}
+```
+
+返回 HTTP 201添加评论成功，403/401遵循HTTP语义
+
+```json
+{
+    "message": "评论成功/评论失败/etc"
+}
+```
