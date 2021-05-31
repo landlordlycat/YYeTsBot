@@ -139,6 +139,7 @@ python /path/to/YYeTsBot/yyetsbot/bot.py
 GET `/api/comments`
 
 分页，支持URL参数：
+* resource_id: 资源id
 * size: 每页评论数量，默认5（或者其他数值）
 * page: 当前页
 
@@ -159,14 +160,15 @@ GET `/api/comments`
             "id": 1
         }
     ],
-    "count": 2
+    "count": 2,
+    "resource_id": 39301
 }
 
 ```
 
 ## 2. 获取验证码
-GET `/api/captha?id=1234abc`，id是随机生成的字符串
-API 返回字符串，形如 `data:image/jpeg;base64,iVBORw0KGgoAAA....`
+GET `/api/captcha?id=1234abc`，id是随机生成的字符串
+API 返回字符串，形如 `data:image/png;base64,iVBORw0KGgoAAA....`
 
 ## 3. 提交评论
 POST `/api/comments`
